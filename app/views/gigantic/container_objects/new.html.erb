@@ -1,0 +1,7 @@
+<% cloudinary_options ||= {} %>
+
+<%= simple_form_for @container_object, url: gigantic_container_objects_path do |f| %>
+
+  <%= f.attachinary_file_field :lot_of_pictures, as: :attachinary, label: 'Ajouter des photos', cloudinary: cloudinary_options, html: {webkitdirectory: ''} %>
+  <%= f.submit 'Enregistrer les photos', class: 'button' %>
+<% end %>

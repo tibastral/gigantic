@@ -1,0 +1,11 @@
+- content_for(:specific_js) do
+  = cloudinary_js_config
+
+- resource ||= nil
+- images_upload_url ||= nil
+- cloudinary_options ||= nil
+- photos_attr ||= nil
+
+= simple_form_for resource, url: images_upload_url, method: :post do |f|
+  = f.attachinary_file_field photos_attr, as: :attachinary, label: 'Ajouter des photos', cloudinary: cloudinary_options, html: {webkitdirectory: ''}
+  = f.submit 'Enregistrer les photos', class: 'button'

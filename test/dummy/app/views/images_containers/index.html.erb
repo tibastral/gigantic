@@ -1,0 +1,12 @@
+<h1>Gigantic photos set upload !</h1>
+
+<%= link_to 'GO UPLOAD', gigantic.new_container_object_path %>
+
+<% if @images_containers.present? %>
+  <ul>
+    <% @images_containers.each do |image| %>
+	    <li><%= image %>
+    <% end %>
+  </ul>
+<% end %>
+<%#= render 'gigantic/images_upload', resource: @image, images_upload_url: image_path(@image), photos_attr: 'lot_of_pictures' %>
