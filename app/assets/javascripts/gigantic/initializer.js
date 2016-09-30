@@ -7,8 +7,10 @@
 
 ready = function() {
   $('.attachinary-input').attachinary({labels: {
-    files: 'Chemin du fichier', status: "Statut de l'image"
-  }});
+      files: 'Fichier', status: "Statut de l'image"
+    },
+    batchSize: 100
+  });
 };
 
 $(document).ready(ready);

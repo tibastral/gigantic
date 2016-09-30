@@ -12,7 +12,7 @@
             <th class='gigantic-table-head__status'><%= (options && options.labels && options.labels.status) ? options.labels.status : 'Statut' %></th>
           </thead>
           <tbody>
-            <% for(var i=0; i<files.length; i++){ %>
+            <% for(var i=files.length-1; i>=0; i--){ %>
               <tr class='gigantic-table--row'>
                 <td class='relative-path'>
                   <%= files[i].relative_path %>
@@ -44,8 +44,9 @@
       @displayOptions = {
         labels: @config.labels
       }
+      @batchSize = @config.batchSize || 50
       @counter = 0
-      @original_token = Date.now()
+      @gigantic_token = Date.now()
       @handled_files = []
       @files = @options.files
 
@@ -90,7 +91,7 @@
             $input = $(input)
             $input.data 'old-val', $input.val() unless $input.data('old-val')?
           @$submit.val  @config.disableWith
-          @$uploadStatus.text @config.disableWith
+          @$uploadStatus.text "Téléchargement commencé..."
           @$submit.prop 'disabled', true
 
         !@maximumReached()
@@ -119,7 +120,7 @@
             $input.val  $input.data('old-val')
           #@$submit.prop 'disabled', false
           fLength = @files.length + @handled_files.length
-          @$uploadStatus.text "#{fLength} file#{'s' if fLength > 1} [100 %] #{@config.disableWith}"
+          @$uploadStatus.text "#{fLength} fichier#{'s' if fLength > 1} [100 %] Téléchargement terminé."
           @$submit.remove()
 
       @$input.bind 'fileuploadprogressall', (e, data) =>
@@ -129,7 +130,7 @@
           @options.maximum = fLength
         if @config.disableWith && @config.indicateProgress
           @$submit.val "[#{progress}%] #{@config.disableWith}"
-          @$uploadStatus.text "#{fLength} file#{'s' if fLength > 1} [#{progress}%] #{@config.disableWith}"
+          @$uploadStatus.text "#{fLength} file#{'s' if fLength > 1} [#{progress}%] Téléchargement en cours..."
 
     addFile: (file) ->
       @counter = @counter + 1
@@ -138,7 +139,7 @@
         @files.push file
         if(@maximumReached())
           console.log("maximum reached !!! ")
-        if @counter == 15 || @maximumReached()
+        if @counter >= @batchSize || @maximumReached()
           console.log(@counter)
           @counter = 0
           @handleFiles(@maximumReached())
@@ -155,7 +156,7 @@
 
       request_params = {
         token: token
-        original_token: @original_token
+        gigantic_token: @gigantic_token
       }
       if(last_call)
         request_params['last_call'] = true
@@ -169,7 +170,6 @@
       $.post url,
         request_params
         ((data, textStatus, jqXHR) ->
-          console.log("success !!! => " + data)
           for file in @handled_files.filter((f, index) -> f.token.toString() == data)
             file['confirmed'] = true
           @redraw()

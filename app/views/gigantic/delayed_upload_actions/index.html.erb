@@ -5,7 +5,7 @@
 		<thead>
 			<th>Date création</th>
 			<th>Statut</th>
-			<th>Nombre de batchs</th>
+			<th>Batchs</th>
 			<th>Actions</th>
 		</thead>
 	  <tbody>
@@ -13,7 +13,15 @@
 				<tr>
 					<td><%= delayed_upload_action.created_at.in_time_zone('Paris').strftime("%H:%M %d/%m/%Y") %></td>
 					<td><%= delayed_upload_action.status %></td>
-					<td><%= delayed_upload_action.upload_batches.try(:count) %></td>
+					<td>
+					  <%= delayed_upload_action.upload_batches.try(:count) %>
+						<% if delayed_upload_action.upload_batches.present? %>
+						  <br />
+							<% delayed_upload_action.upload_batches.each_with_index do |upload_batch, index| %>
+								Batch n°<%= index %> : <%= upload_batch.status %>
+							<% end %>
+						<% end %>
+					</td>
 					<td></td>
 				</tr>
 			<% end %>

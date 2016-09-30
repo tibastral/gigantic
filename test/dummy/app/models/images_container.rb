@@ -11,6 +11,14 @@ class ImagesContainer < ActiveRecord::Base
     self.update_attributes(message: "Un nouveau container avec ces images : #{self.images.pluck(:original_filename).join(', ')}")
   end
 
+  def valid_upload_params?(request_params)
+    params = JSON.parse(request_params)
+    if params
+      puts params.first['relative_path']
+      params.first['relative_path']
+    end
+  end
+
   def to_s
     "#{id} : #{self.images.count}"
   end
