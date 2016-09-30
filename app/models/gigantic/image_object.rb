@@ -10,6 +10,6 @@ module Gigantic::ImageObject
     has_attachment :picture
     validates :picture, presence: true
 
-    belongs_to Gigantic.container_resource.to_sym
+    belongs_to Gigantic.container_object_resource.to_sym
   end
 end

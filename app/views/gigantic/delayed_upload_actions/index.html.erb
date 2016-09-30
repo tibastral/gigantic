@@ -1,0 +1,22 @@
+<h1>Les actions pour plus tard :</h1>
+
+<% if @delayed_upload_actions.present? %>
+	<table>
+		<thead>
+			<th>Date création</th>
+			<th>Statut</th>
+			<th>Nombre de batchs</th>
+			<th>Actions</th>
+		</thead>
+	  <tbody>
+		  <% @delayed_upload_actions.each do |delayed_upload_action| %>
+				<tr>
+					<td><%= delayed_upload_action.created_at.in_time_zone('Paris').strftime("%H:%M %d/%m/%Y") %></td>
+					<td><%= delayed_upload_action.status %></td>
+					<td><%= delayed_upload_action.upload_batches.try(:count) %></td>
+					<td></td>
+				</tr>
+			<% end %>
+	  </tbody>
+	</table>
+<% end %>

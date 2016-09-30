@@ -3,8 +3,11 @@ module Gigantic
     queue_as :default
 
     def perform(*args)
-      gigantic_container = Gigantic.container_class.find args[0]
-      gigantic_container.perform_upload_for(args[1])
+      container_object = Gigantic.container_object_class.find args[0]
+      delayed_upload_action = Gigantic::DelayedUploadAction.find(args[1])
+      delayed_upload_action.upload_batches.each do |upload_batch|
+        container_object.perform_upload_for(upload_batch.parameters)
+      end
     end
   end
 end

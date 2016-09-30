@@ -1,6 +1,10 @@
 require "gigantic/engine"
 
 module Gigantic
+  def self.table_prefix
+    'gigantic_'
+  end
+
   def self.include(base)
     extends(ClassMethods)
   end

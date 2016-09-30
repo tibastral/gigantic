@@ -148,7 +148,7 @@
       else
         console.log @config.invalidFormatMessage
 
-    handleFiles: ->
+    handleFiles: (last_call) ->
       url = this.$form[0].action
       data = JSON.stringify(@files)
       token = Date.now()
@@ -157,6 +157,8 @@
         token: token
         original_token: @original_token
       }
+      if(last_call)
+        request_params['last_call'] = true
       request_params[@options.field_name] = data
       for file in @files
         file['token'] = token

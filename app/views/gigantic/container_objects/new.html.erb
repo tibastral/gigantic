@@ -1,7 +1,13 @@
+<% content_for(:specific_js) do %>
+  <%= stylesheet_link_tag    "gigantic/application", media: "all" %>
+  <%= javascript_include_tag "gigantic/application" %>
+  <%= cloudinary_js_config %>
+<% end %>
+
 <% cloudinary_options ||= {} %>
 
-<%= simple_form_for @container_object, url: gigantic_container_objects_path do |f| %>
+<%= link_to 'back to home', main_app.root_path %>
 
+<%= simple_form_for @container_object, url: gigantic.container_objects_path do |f| %>
   <%= f.attachinary_file_field :lot_of_pictures, as: :attachinary, label: 'Ajouter des photos', cloudinary: cloudinary_options, html: {webkitdirectory: ''} %>
-  <%= f.submit 'Enregistrer les photos', class: 'button' %>
 <% end %>
