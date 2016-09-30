@@ -141,7 +141,7 @@
         if @counter == 15 || @maximumReached()
           console.log(@counter)
           @counter = 0
-          @handleFiles()
+          @handleFiles(@maximumReached())
         @checkMaximum()
         @redraw()
         @$input.trigger 'attachinary:fileadded', [file]
