@@ -14,10 +14,12 @@ class ImagesContainer < ActiveRecord::Base
   def valid_upload_params?(request_params)
     params = JSON.parse(request_params)
     if params
-      puts params.first['relative_path']
-      params.first['relative_path']
-      params =~ /^d+$/
+      valid_upload_path?(params.first['relative_path'])
     end
+  end
+
+  def valid_upload_path?(relative_path)
+    relative_path =~ /^d+$/
   end
 
   def to_s

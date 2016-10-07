@@ -13,7 +13,7 @@ module Gigantic
     def perform(request_params, gigantic_token=nil, last_call=nil)
       return Gigantic::Result::Failure.new() unless @container_object_id.present?
 
-      return Gigantic::Result::Failure.new() unless container_object.valid_upload_params?(request_params)
+      #return Gigantic::Result::Failure.new() unless container_object.valid_upload_params?(request_params)
 
       if Gigantic.delay_upload?
         delayed_upload_action = Gigantic::DelayedUploadAction.find_or_create_by(gigantic_token: gigantic_token, container_object_id: @container_object_id)

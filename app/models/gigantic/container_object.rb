@@ -9,11 +9,17 @@ module Gigantic::ContainerObject
     raise "valid_upload_params? needs to be overriden in #{self.class_name}"
   end
 
+  def valid_upload_path?(relative_path)
+    raise "valid_upload_path? needs to be overriden in #{self.class_name}"
+  end
+
   class_methods do
     # This method can be overriden if some extra steps need to be perform on creation
     # (like using relative path in request_params items for a name)
-    def gigantic_create_for(gigantic_token: gigantic_token)
-      find_or_create_by(gigantic_token: gigantic_token)
+    def gigantic_create_for(gigantic_token: gigantic_token, example_path: example_path)
+      obj = find_or_create_by(gigantic_token: gigantic_token)
+      obj.update_attribute(:gigantic_example_path, example_path) if example_path
+      obj
     end
   end
 

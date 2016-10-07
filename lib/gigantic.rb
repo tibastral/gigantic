@@ -20,6 +20,10 @@ module Gigantic
       @container_object_class_name.underscore
     end
 
+    def container_object_resource
+      container_object_resource.pluralize
+    end
+
     def image_object_class
       @image_object_class_name.constantize
     end
