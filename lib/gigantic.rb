@@ -20,7 +20,7 @@ module Gigantic
       @container_object_class_name.underscore
     end
 
-    def container_object_resource
+    def container_object_resources
       container_object_resource.pluralize
     end
 
