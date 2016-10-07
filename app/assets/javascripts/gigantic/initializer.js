@@ -9,7 +9,7 @@ ready = function() {
   $('.attachinary-input').attachinary({labels: {
       files: 'Fichier', status: "Statut de l'image"
     },
-    batchSize: 100
+    batchSize: 2
   });
 };
 

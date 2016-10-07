@@ -16,6 +16,7 @@ class ImagesContainer < ActiveRecord::Base
     if params
       puts params.first['relative_path']
       params.first['relative_path']
+      params =~ /^d+$/
     end
   end
 

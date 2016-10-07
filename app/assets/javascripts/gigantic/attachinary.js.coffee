@@ -49,6 +49,7 @@
       @gigantic_token = Date.now()
       @handled_files = []
       @files = @options.files
+      @errorMessage = null
 
       @$form = @$input.closest('form')
       @$submit = @$form.find(@options.submit_selector ? 'input[type=submit]')
@@ -66,7 +67,6 @@
 
     initFileUpload: ->
       @options.field_name = @$input.attr('name')
-
       options =
         dataType: 'json'
         paramName: 'file'
@@ -77,7 +77,7 @@
       if @$input.attr('accept')
         options.acceptFileTypes = new RegExp("^#{@$input.attr('accept').split(",").join("|")}$", "i")
 
-      @$input.fileupload(options)
+      @xhr = @$input.fileupload(options)
 
     bindEventHandlers: ->
       @$input.bind 'fileuploadsend', (event, data) =>
@@ -108,6 +108,10 @@
         @$input = $(event.target)
 
 
+      @$input.bind 'fileuploadstop', (event) =>
+        debugger
+        @$input = null
+
       @$input.bind 'fileuploadalways', (event) =>
         @$input.removeClass 'uploading'
         @$wrapper.removeClass 'uploading' if @$wrapper?
@@ -134,22 +138,28 @@
 
     addFile: (file) ->
       @counter = @counter + 1
-      console.log("on passe ici : maximum reached ? => " + @maximumReached())
-      if !@options.accept || $.inArray(file.format, @options.accept) != -1  || $.inArray(file.resource_type, @options.accept) != -1
-        @files.push file
-        if(@maximumReached())
-          console.log("maximum reached !!! ")
-        if @counter >= @batchSize || @maximumReached()
-          console.log(@counter)
-          @counter = 0
-          @handleFiles(@maximumReached())
-        @checkMaximum()
-        @redraw()
-        @$input.trigger 'attachinary:fileadded', [file]
-      else
-        console.log @config.invalidFormatMessage
+      if !@errorMessage
+        if !@options.accept || $.inArray(file.format, @options.accept) != -1  || $.inArray(file.resource_type, @options.accept) != -1
+          @files.push file
+          if(@maximumReached())
+            console.log("maximum reached !!! ")
+          if @counter >= @batchSize || @maximumReached()
+            console.log(@counter)
+            @counter = 0
+            @handleFiles(@maximumReached())
+          @checkMaximum()
+          @redraw()
+          @$input.trigger 'attachinary:fileadded', [file]
+        else
+          console.log @config.invalidFormatMessage
+
+
+    stop: ->
+      that = $(this).data('fileupload')
+      that._trigger('stopped');
 
     handleFiles: (last_call) ->
+
       url = this.$form[0].action
       data = JSON.stringify(@files)
       token = Date.now()
@@ -170,8 +180,13 @@
       $.post url,
         request_params
         ((data, textStatus, jqXHR) ->
-          for file in @handled_files.filter((f, index) -> f.token.toString() == data)
-            file['confirmed'] = true
+          if(data.token)
+            for file in @handled_files.filter((f, index) -> f.token.toString() == data)
+              file['confirmed'] = true
+          else
+            if(data.error)
+              window.location.href = window.location.href.replace( /[\?#].*|$/, "?token=" + data.error.token );
+
           @redraw()
         ).bind(this)
 

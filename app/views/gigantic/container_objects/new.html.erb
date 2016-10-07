@@ -8,6 +8,12 @@
 
 <%= link_to 'back to home', main_app.root_path %>
 
+<% unless @message.blank? %>
+	<div class="error">
+	  <%= @message %>
+	</div>
+<% end %>
+
 <%= simple_form_for @container_object, url: gigantic.container_objects_path do |f| %>
   <%= f.attachinary_file_field :lot_of_pictures, as: :attachinary, label: 'Ajouter des photos', cloudinary: cloudinary_options, html: {webkitdirectory: ''} %>
 <% end %>

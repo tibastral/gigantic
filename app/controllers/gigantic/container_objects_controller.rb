@@ -4,19 +4,32 @@ module Gigantic
 
     def new
       @container_object = Gigantic.container_object_class.new
+      if(params[:token])
+        @message = "L'upload de vos images a échoué. Sauf erreur de notre part, votre arborescence de fichiers n'est pas correcte. Merci de vérifier votre arborescence. Si votre problème persiste, n'hésitez pas à contacter l'administrateur."
+      end
     end
 
     def create
       gigantic_token = permitted_params[:gigantic_token]
       last_call = permitted_params[:last_call]
       request_params = permitted_params[Gigantic.container_object_resource][:lot_of_pictures].first
+      @container_object = Gigantic.container_object_class.gigantic_create_for(gigantic_token: gigantic_token)
 
-      @container_object = Gigantic.container_object_class.gigantic_create_for(gigantic_token: gigantic_token, request_params: request_params)
-
-      Gigantic::ImagesImporter.new(@container_object).perform(request_params, gigantic_token, last_call)
+      response = if @container_object.valid_upload_params?(request_params)
+                   Gigantic::ImagesImporter.new(@container_object).perform(request_params, gigantic_token, last_call)
+                   {
+                     token: permitted_params[:token]
+                   }
+                 else
+                   {
+                     error: {
+                       token: permitted_params[:token]
+                     }
+                   }
+                 end
 
       if request.xhr?
-        render text: permitted_params[:token], layout: false
+        render json: response, layout: false
       else
         redirect_to main_app.root_path
       end

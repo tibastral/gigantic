@@ -11,9 +11,9 @@ module Gigantic
     end
 
     def perform(request_params, gigantic_token=nil, last_call=nil)
-      return Gigantic::Result::Failure.new unless @container_object_id.present?
+      return Gigantic::Result::Failure.new() unless @container_object_id.present?
 
-      return Gigantic::Result::Failure.new unless container_object.valid_upload_params?(request_params)
+      return Gigantic::Result::Failure.new() unless container_object.valid_upload_params?(request_params)
 
       if Gigantic.delay_upload?
         delayed_upload_action = Gigantic::DelayedUploadAction.find_or_create_by(gigantic_token: gigantic_token, container_object_id: @container_object_id)
@@ -26,8 +26,8 @@ module Gigantic
         container_object.perform_upload_for(request_params)
       end
 
-      #rescue Exception => e
-      #  Gigantic::Result::Failure.new(message: e.message)
+      rescue Exception => e
+        Gigantic::Result::Failure.new(message: e.message)
     end
 
   end
