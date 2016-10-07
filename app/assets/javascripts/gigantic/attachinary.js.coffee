@@ -53,6 +53,7 @@
 
       @$form = @$input.closest('form')
       @$submit = @$form.find(@options.submit_selector ? 'input[type=submit]')
+      @gigantic_container_id = @$form.find('#gigantic-container-id').value()
 
       @$uploadStatus = $('<div>Téléchargement : 0 %</div>')
       @$form.prepend(@$uploadStatus)
@@ -168,6 +169,9 @@
         token: token
         gigantic_token: @gigantic_token
       }
+      if(@gigantic_container_id)
+        request_params['gigantic_container_id'] = @gigantic_container_id
+
       if(last_call)
         request_params['last_call'] = true
       request_params[@options.field_name] = data

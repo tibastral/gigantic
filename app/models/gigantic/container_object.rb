@@ -16,8 +16,13 @@ module Gigantic::ContainerObject
   class_methods do
     # This method can be overriden if some extra steps need to be perform on creation
     # (like using relative path in request_params items for a name)
-    def gigantic_create_for(gigantic_token: gigantic_token, example_path: example_path)
-      obj = find_or_create_by(gigantic_token: gigantic_token)
+    def gigantic_find_or_create_by(gigantic_token: gigantic_token, example_path: example_path, id: id)
+      if id.present?
+        obj = find(id)
+        obj.update_attribute(:gigantic_token, gigantic_token) if obj.gigantic_token != gigantic_token
+      else
+        obj = find_or_create_by(gigantic_token: gigantic_token)
+      end
       obj.update_attribute(:gigantic_example_path, example_path) if example_path
       obj
     end
