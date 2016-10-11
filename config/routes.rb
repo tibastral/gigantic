@@ -1,7 +1,9 @@
 Gigantic::Engine.routes.draw do
   mount Attachinary::Engine => "/attachinary"
 
-  #resources Gigantic.object_resources, only: [:new, :create]
-  resources :container_objects, only: [:new, :create, :edit, :update]
+  resources :container_objects, only: [] do
+    post :save_uploaded_images, on: :collection
+  end
+
   resources :delayed_upload_actions, only: [:index]
 end

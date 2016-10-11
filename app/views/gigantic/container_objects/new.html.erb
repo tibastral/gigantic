@@ -1,9 +1,0 @@
-<%= link_to 'back to home', main_app.root_path %>
-
-<% unless @message.blank? %>
-	<div class="error">
-	  <%= @message %>
-	</div>
-<% end %>
-
-<%= render 'gigantic/container_objects/form', container_object: @container_object %>

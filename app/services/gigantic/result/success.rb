@@ -1,4 +1,4 @@
-module Success
+module Gigantic
   module Result
     class Success < OpenStruct
       def success?
@@ -7,3 +7,4 @@ module Success
     end
   end
 end
+

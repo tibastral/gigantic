@@ -19,7 +19,7 @@ class ImagesContainer < ActiveRecord::Base
   end
 
   def valid_upload_path?(relative_path)
-    relative_path =~ /^d+$/
+    relative_path =~ /^.+$/
   end
 
   def to_s

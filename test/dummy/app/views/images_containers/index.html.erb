@@ -1,11 +1,11 @@
 <h1>Gigantic photos set upload !</h1>
 
-<%= link_to 'GO UPLOAD', gigantic.new_container_object_path %>
+<%= link_to 'GO UPLOAD', new_images_container_path %>
 
 <% if @images_containers.present? %>
   <ul>
     <% @images_containers.each do |image| %>
-	    <li><%= image %>
+	    <li><%= link_to image, edit_images_container_path(image) %></li>
     <% end %>
   </ul>
 <% end %>

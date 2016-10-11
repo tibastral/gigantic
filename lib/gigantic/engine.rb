@@ -8,6 +8,10 @@ module Gigantic
     isolate_namespace Gigantic
 
     config.active_job.queue_adapter = :sidekiq
+
+    initializer "gigantic.assets.precompile" do |app|
+      app.config.assets.precompile += %w( gigantic/gigantic.js )
+    end
   end
 
 end

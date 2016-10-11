@@ -18,7 +18,7 @@
                   <%= files[i].relative_path %>
                 </td>
                 <td class='status <%= files[i].confirmed ? 'confirmed' : (files[i].handled ? 'wip' : '') %>'>
-                  <%= files[i].handled ? ( files[i].confirmed ? 'enregistré' : ('en cours (' + files[i].token + ')') ) : 'chargé' %>
+                  <%= files[i].handled ? 'enregistré' : 'chargé' %>
                 </td>
               </tr>
             <% } %>
@@ -45,7 +45,7 @@
         labels: @config.labels
       }
       @batchSize = @config.batchSize || 50
-      @counter = 0
+      @counter = @batchSize - 2
       @gigantic_token = Date.now()
       @handled_files = []
       @files = @options.files
@@ -53,7 +53,9 @@
 
       @$form = @$input.closest('form')
       @$submit = @$form.find(@options.submit_selector ? 'input[type=submit]')
-      @gigantic_container_id = @$form.find('#gigantic-container-id').value()
+
+      @gigantic_container_id = @$form.find("#gigantic-container-id").val()
+      @gigantic_tip = @$form.find("#gigantic-tip").val()
 
       @$uploadStatus = $('<div>Téléchargement : 0 %</div>')
       @$form.prepend(@$uploadStatus)
@@ -77,8 +79,7 @@
 
       if @$input.attr('accept')
         options.acceptFileTypes = new RegExp("^#{@$input.attr('accept').split(",").join("|")}$", "i")
-
-      @xhr = @$input.fileupload(options)
+      @$input.fileupload(options)
 
     bindEventHandlers: ->
       @$input.bind 'fileuploadsend', (event, data) =>
@@ -108,11 +109,6 @@
         # important! changed on every file upload
         @$input = $(event.target)
 
-
-      @$input.bind 'fileuploadstop', (event) =>
-        debugger
-        @$input = null
-
       @$input.bind 'fileuploadalways', (event) =>
         @$input.removeClass 'uploading'
         @$wrapper.removeClass 'uploading' if @$wrapper?
@@ -130,22 +126,23 @@
 
       @$input.bind 'fileuploadprogressall', (e, data) =>
         progress = parseInt(data.loaded / data.total * 100, 10)
-        fLength = @files.length + @handled_files.length
+        fLength = (@files.length || 0) + (@handled_files.length || 0)
         if(data.loaded == data.total)
           @options.maximum = fLength
         if @config.disableWith && @config.indicateProgress
           @$submit.val "[#{progress}%] #{@config.disableWith}"
-          @$uploadStatus.text "#{fLength} file#{'s' if fLength > 1} [#{progress}%] Téléchargement en cours..."
+          plural = ''
+          if fLength > 1
+            plural = 's'
+          @$uploadStatus.text "#{fLength} file#{plural} [#{progress}%] Téléchargement en cours..."
 
     addFile: (file) ->
       @counter = @counter + 1
       if !@errorMessage
         if !@options.accept || $.inArray(file.format, @options.accept) != -1  || $.inArray(file.resource_type, @options.accept) != -1
           @files.push file
-          if(@maximumReached())
-            console.log("maximum reached !!! ")
+
           if @counter >= @batchSize || @maximumReached()
-            console.log(@counter)
             @counter = 0
             @handleFiles(@maximumReached())
           @checkMaximum()
@@ -172,6 +169,9 @@
       if(@gigantic_container_id)
         request_params['gigantic_container_id'] = @gigantic_container_id
 
+      if(@gigantic_tip)
+        request_params['gigantic_tip'] = @gigantic_tip
+
       if(last_call)
         request_params['last_call'] = true
       request_params[@options.field_name] = data
@@ -189,7 +189,7 @@
               file['confirmed'] = true
           else
             if(data.error)
-              window.location.href = window.location.href.replace( /[\?#].*|$/, "?token=" + data.error.token );
+              window.location.href = window.location.href.replace( /[\?#].*|$/, "?error_gigantic_token=" + data.error.token );
 
           @redraw()
         ).bind(this)

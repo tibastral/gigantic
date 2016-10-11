@@ -8,4 +8,12 @@ class ImagesContainersController < ApplicationController
     @images_container = ImagesContainer.find(params[:id])
   end
 
+  def edit
+    @images_container = ImagesContainer.find(params[:id])
+  end
+
+  def new
+    @images_container = ImagesContainer.new
+  end
+
 end

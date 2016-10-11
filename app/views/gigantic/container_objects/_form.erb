@@ -1,15 +1,28 @@
+<% gigantic_message = Gigantic.handle_gigantic_error_message(params) %>
+<% tip ||= nil %>
+
 <% content_for(:specific_js) do %>
-  <%= stylesheet_link_tag    "gigantic/application", media: "all" %>
-  <%= javascript_include_tag "gigantic/application" %>
+  <%= javascript_include_tag "gigantic/gigantic" %>
   <%= cloudinary_js_config %>
 <% end %>
 
 <% cloudinary_options ||= {} %>
 
+<% unless gigantic_message.blank? %>
+  <div class="error">
+    <%= gigantic_message %>
+  </div>
+<% end %>
 
-<%= simple_form_for container_object, url: gigantic.container_objects_path do |f| %>
+
+<%= simple_form_for container_object, url: gigantic.save_uploaded_images_container_objects_path do |f| %>
 	<% unless container_object.new_record? %>
     <%= hidden_field_tag 'gigantic-container-id', container_object.id %>
 	<% end %>
+
+  <% unless tip.blank? %>
+    <%= hidden_field_tag 'gigantic-tip', tip %>
+	<% end %>
+
   <%= f.attachinary_file_field :lot_of_pictures, as: :attachinary, label: 'Ajouter des photos', cloudinary: cloudinary_options, html: {webkitdirectory: ''} %>
 <% end %>
