@@ -55,6 +55,7 @@
       @$submit = @$form.find(@options.submit_selector ? 'input[type=submit]')
 
       @gigantic_container_id = @$form.find("#gigantic-container-id").val()
+      @gigantic_container_type = @$form.find("#gigantic-container-type").val()
       @gigantic_tip = @$form.find("#gigantic-tip").val()
 
       @$uploadStatus = $('<div>Téléchargement : 0 %</div>')
@@ -168,6 +169,9 @@
       }
       if(@gigantic_container_id)
         request_params['gigantic_container_id'] = @gigantic_container_id
+
+      if(@gigantic_container_type)
+        request_params['gigantic_container_type'] = @gigantic_container_type
 
       if(@gigantic_tip)
         request_params['gigantic_tip'] = @gigantic_tip

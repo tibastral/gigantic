@@ -12,15 +12,21 @@ module Gigantic
 
     private
     def permitted_params
-      params.permit(:token, :last_call, :gigantic_token, :gigantic_tip, :gigantic_container_id, Gigantic.container_object_resource.to_sym => {lot_of_pictures: [] })
+      permitted_container_types_params = {}
+      Gigantic.container_object_types.keys.each do |key|
+        permitted_container_types_params[Gigantic.container_object_resource(key).to_sym] = {lot_of_pictures: [] }
+      end
+
+      params.permit(:token, :last_call, :gigantic_token, :gigantic_tip, :gigantic_container_id, :gigantic_container_type, permitted_container_types_params)
     end
 
     def response_for(gigantic_params)
       container_object_id = gigantic_params[:gigantic_container_id]
+      container_object_type = (gigantic_params[:gigantic_container_type] || :default)
       gigantic_token = gigantic_params[:gigantic_token]
       last_call = gigantic_params[:last_call]
       tip = gigantic_params[:gigantic_tip]
-      request_params = gigantic_params[Gigantic.container_object_resource][:lot_of_pictures].first
+      request_params = gigantic_params[Gigantic.container_object_resource(container_object_type)][:lot_of_pictures].first
       example_path = ''
       begin
         example_path = JSON.parse(request_params).first['relative_path']
@@ -28,9 +34,7 @@ module Gigantic
         example_path = 'Invalid params : request denied.'
       end
 
-      @container_object = Gigantic.container_object_class.gigantic_find_or_create_by(gigantic_token: gigantic_token, example_path: example_path, id: container_object_id)
-
-
+      @container_object = Gigantic.container_object_class(container_object_type).gigantic_find_or_create_by(gigantic_token: gigantic_token, example_path: example_path, id: container_object_id)
 
       if @container_object.valid_upload_path?(example_path, tip)
         result = Gigantic::ImagesImporter.new(@container_object).perform(request_params, gigantic_token, last_call, tip)

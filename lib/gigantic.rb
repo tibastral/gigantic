@@ -10,18 +10,22 @@ module Gigantic
   end
 
   class << self
-    attr_accessor :image_object_class_name, :delay_upload, :container_object_class_name
+    attr_accessor :image_object_class_name, :delay_upload, :container_object_class_name, :container_object_types
 
-    def container_object_class
-      @container_object_class_name.constantize
+    def container_object_types
+      (@container_object_types || {}).merge({default: self.container_object_class_name})
     end
 
-    def container_object_resource
-      @container_object_class_name.underscore
+    def container_object_class(type=:default)
+      container_object_types[type.to_sym].constantize
     end
 
-    def container_object_resources
-      container_object_resource.pluralize
+    def container_object_resource(type=:default)
+      container_object_types[type.to_sym].underscore
+    end
+
+    def container_object_resources(type=:default)
+      container_object_resource(type.to_sym).pluralize
     end
 
     def image_object_class

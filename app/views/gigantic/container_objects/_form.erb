@@ -1,5 +1,6 @@
 <% gigantic_message = Gigantic.handle_gigantic_error_message(params) %>
 <% tip ||= nil %>
+<% container_type ||= nil %>
 
 <% content_for(:specific_js) do %>
   <%= javascript_include_tag "gigantic/gigantic" %>
@@ -22,6 +23,10 @@
 
   <% unless tip.blank? %>
     <%= hidden_field_tag 'gigantic-tip', tip %>
+	<% end %>
+
+  <% unless container_type.blank? %>
+    <%= hidden_field_tag 'gigantic-container-type', container_type %>
 	<% end %>
 
   <%= f.attachinary_file_field :lot_of_pictures, as: :attachinary, label: 'Ajouter des photos', cloudinary: cloudinary_options, html: {webkitdirectory: ''} %>
