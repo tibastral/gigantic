@@ -2,23 +2,23 @@ module Gigantic::ContainerObject
   extend ActiveSupport::Concern
 
   def perform_upload_for(request_params, tip=nil)
-    raise "perform_upload_for needs to be overriden in #{self.class_name}"
+    raise "perform_upload_for needs to be overriden in #{self.class.name}"
   end
 
   def valid_upload_params?(request_params, tip=nil)
-    raise "valid_upload_params? needs to be overriden in #{self.class_name}"
+    raise "valid_upload_params? needs to be overriden in #{self.class.name}"
   end
 
   def valid_upload_path?(relative_path, tip=nil)
-    raise "valid_upload_path? needs to be overriden in #{self.class_name}"
+    raise "valid_upload_path? needs to be overriden in #{self.class.name}"
   end
 
   def invalid_upload_path_message(relative_path, tip)
-    raise "invalid_upload_path_message needs to be overriden in #{self.class_name}"
+    raise "invalid_upload_path_message needs to be overriden in #{self.class.name}"
   end
 
   def valid_relative_path_examples(tip)
-    raise "valid_relative_path_examples needs to be overriden in #{self.class_name}"
+    raise "valid_relative_path_examples needs to be overriden in #{self.class.name}"
   end
 
   class_methods do

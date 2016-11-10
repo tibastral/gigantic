@@ -1,3 +1,20 @@
 = Gigantic
 
 This project rocks and uses MIT-LICENSE.
+
+## First add gigantic to your gemfile :
+
+gem 'gigantic', git: 'https://github.com/Berlimioz/gigantic'
+
+## add and run gigantic migrations:
+
+rake gigantic:install:migrations
+rake db:migrate
+
+## mount engine in routes :
+
+mount Gigantic::Engine => "/gigantic"
+
+## Add gigantic to your application.js :
+
+
