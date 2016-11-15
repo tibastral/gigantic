@@ -1,6 +1,8 @@
 class ImagesContainer < ActiveRecord::Base
   include Gigantic::ContainerObject
 
+  has_many :images
+
   def perform_upload_for(request_params)
     params = JSON.parse(request_params)
 

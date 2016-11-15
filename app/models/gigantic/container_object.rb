@@ -38,6 +38,5 @@ module Gigantic::ContainerObject
 
   included do
     has_attachments :lot_of_pictures, accept: [:jpg, :png, :gif]
-    has_many Gigantic.image_object_resources.to_sym
   end
 end

@@ -32,14 +32,6 @@ module Gigantic
       @image_object_class_name.constantize
     end
 
-    def image_object_resource
-      @image_object_class_name.underscore
-    end
-
-    def image_object_resources
-      image_object_resource.pluralize
-    end
-
     def delay_upload?
       defined?(@delay_upload) ? @delay_upload : false
     end
