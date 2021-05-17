@@ -1,4 +1,4 @@
-class CreateImagesContainer < ActiveRecord::Migration
+class CreateImagesContainer < ActiveRecord::Migration[4.2]
   def change
     create_table :images_containers do |t|
       t.text :message

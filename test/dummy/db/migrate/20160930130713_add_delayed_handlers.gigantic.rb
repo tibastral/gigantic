@@ -1,5 +1,5 @@
 # This migration comes from gigantic (originally 20160930124604)
-class AddDelayedHandlers < ActiveRecord::Migration
+class AddDelayedHandlers < ActiveRecord::Migration[4.2]
   def change
     create_table :gigantic_delayed_upload_actions do |t|
       t.string :gigantic_token
