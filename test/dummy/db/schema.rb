@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161007130734) do
+ActiveRecord::Schema.define(version: 20210519152801) do
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.string "attachinariable_type"
     t.integer "attachinariable_id"
+    t.string "attachinariable_type"
     t.string "scope"
     t.string "public_id"
     t.string "version"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20161007130734) do
     t.string "status", default: "created"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "container_object_type"
   end
 
   create_table "gigantic_upload_batches", force: :cascade do |t|
