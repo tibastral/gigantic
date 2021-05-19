@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,53 +10,53 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161007130734) do
+ActiveRecord::Schema.define(version: 20210519152801) do
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.integer  "attachinariable_id"
-    t.string   "attachinariable_type"
-    t.string   "scope"
-    t.string   "public_id"
-    t.string   "version"
-    t.integer  "width"
-    t.integer  "height"
-    t.string   "format"
-    t.string   "resource_type"
+    t.integer "attachinariable_id"
+    t.string "attachinariable_type"
+    t.string "scope"
+    t.string "public_id"
+    t.string "version"
+    t.integer "width"
+    t.integer "height"
+    t.string "format"
+    t.string "resource_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["attachinariable_type", "attachinariable_id", "scope"], name: "by_scoped_parent"
   end
 
-  add_index "attachinary_files", ["attachinariable_type", "attachinariable_id", "scope"], name: "by_scoped_parent"
-
   create_table "gigantic_delayed_upload_actions", force: :cascade do |t|
-    t.string   "gigantic_token"
-    t.integer  "container_object_id"
-    t.string   "message"
-    t.string   "status",              default: "created"
+    t.string "gigantic_token"
+    t.integer "container_object_id"
+    t.string "message"
+    t.string "status", default: "created"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "container_object_type"
   end
 
   create_table "gigantic_upload_batches", force: :cascade do |t|
-    t.integer  "delayed_upload_action_id"
-    t.text     "parameters"
+    t.integer "delayed_upload_action_id"
+    t.text "parameters"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status",                   default: "created"
+    t.string "status", default: "created"
   end
 
   create_table "images", force: :cascade do |t|
-    t.string  "message"
-    t.string  "original_filename"
+    t.string "message"
+    t.string "original_filename"
     t.integer "images_container_id"
   end
 
   create_table "images_containers", force: :cascade do |t|
-    t.text     "message"
+    t.text "message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "gigantic_token"
-    t.string   "gigantic_example_path"
+    t.string "gigantic_token"
+    t.string "gigantic_example_path"
   end
 
 end

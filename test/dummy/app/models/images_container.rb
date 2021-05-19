@@ -3,7 +3,7 @@ class ImagesContainer < ActiveRecord::Base
 
   has_many :images
 
-  def perform_upload_for(request_params)
+  def perform_upload_for(request_params, _tip=nil)
     params = JSON.parse(request_params)
 
     params.each do |p_hash|
@@ -20,7 +20,7 @@ class ImagesContainer < ActiveRecord::Base
     end
   end
 
-  def valid_upload_path?(relative_path)
+  def valid_upload_path?(relative_path, tip=nil)
     relative_path =~ /^.+$/
   end
 
