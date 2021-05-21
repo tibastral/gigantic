@@ -1,6 +1,6 @@
 <% gigantic_message = Gigantic.handle_gigantic_error_message(params) %>
 <% tip ||= nil %>
-<% container_type ||= nil %>
+<% container_type ||= :default %>
 
 <% content_for(:specific_js) do %>
   <%= javascript_include_tag "gigantic/gigantic" %>
