@@ -15,4 +15,6 @@ gemspec
 
 gem 'jquery-rails'
 gem 'sidekiq'
-gem 'responders', '~> 2.0'
+gem 'responders'
+
+gem "net-smtp", "~> 0.3.1"
