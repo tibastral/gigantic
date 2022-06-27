@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "jquery-rails"
   s.add_dependency "cloudinary"
-  s.add_dependency "attachinary"
   s.add_dependency "sidekiq"
   s.add_dependency "simple_form"
   s.add_dependency "haml-rails"
