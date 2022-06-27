@@ -10,6 +10,7 @@ PATH
   remote: .
   specs:
     gigantic (0.0.1)
+      attachinary
       cloudinary
       coffee-rails
       haml-rails
