@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 # Declare your gem's dependencies in gigantic.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
-gem "attachinary", git: "https://github.com/talyaniv/attachinary"
 gemspec
 
 # Declare any dependencies that are still in development here instead of in
@@ -17,5 +16,7 @@ gemspec
 gem 'jquery-rails'
 gem 'sidekiq'
 gem 'responders'
+gem 'webrick'
+gem 'sprockets-rails'
 
 gem "net-smtp", "~> 0.3.1"
