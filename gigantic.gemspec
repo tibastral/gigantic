@@ -20,8 +20,8 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 7"
 
   s.add_dependency "jquery-rails"
-  s.add_dependency "cloudinary"
-  s.add_dependency "attachinary"
+  s.add_dependency "cloudinary", "1.1.7"
+  s.add_dependency "attachinary", "1.3.1"
   s.add_dependency "sidekiq"
   s.add_dependency "simple_form"
   s.add_dependency "haml-rails"

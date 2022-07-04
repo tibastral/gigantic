@@ -2,8 +2,8 @@ PATH
   remote: .
   specs:
     gigantic (0.0.1)
-      attachinary
-      cloudinary
+      attachinary (= 1.3.1)
+      cloudinary (= 1.1.7)
       coffee-rails
       haml-rails
       jquery-rails
