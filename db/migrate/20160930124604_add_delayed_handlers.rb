@@ -1,4 +1,4 @@
-class AddDelayedHandlers < ActiveRecord::Migration
+class AddDelayedHandlers < ActiveRecord::Migration[7.0]
   def change
     create_table :gigantic_delayed_upload_actions do |t|
       t.string :gigantic_token

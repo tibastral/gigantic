@@ -1,4 +1,4 @@
-class AddExamplePathToGiganticContainer < ActiveRecord::Migration
+class AddExamplePathToGiganticContainer < ActiveRecord::Migration[7.0]
   def change
 
     Gigantic.container_object_types.keys.each do | key|
